@@ -6,9 +6,7 @@ import { createIssue } from "../controllers/jiraRest/createIssue.js";
 
 const router = Router();
 
-router.route('/api/jira/users')
-
-router.get('/api/jira/users',async(req,res)=>{
+router.route('/api/jira/users').get(async(req,res)=>{
     try{
         let respuesta = await getUsers()
 
@@ -16,7 +14,7 @@ router.get('/api/jira/users',async(req,res)=>{
     }catch(err){
         console.log(err)
     }
-})  
+})
 
 router.route('/api/jira/issue')
 .get(async(req,res)=>{
