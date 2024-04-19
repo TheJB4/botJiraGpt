@@ -1,17 +1,19 @@
 import express from "express"
 import "dotenv/config";
-import OpenAI from 'openai';
+import path, {dirname} from 'path'
+import { fileURLToPath } from 'url';
+import { readExcel } from "./controllers/excel/readExcel.js";
+
+
 import jiraRoutes from './routes/jira.routes.js'
-import { getUsers } from "./controllers/jiraRest/getUsers.js";
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 let app = express()
 
 app.use(express.json())
-const openai = new OpenAI({
-   apiKey: process.env.OPENAI_API_KEY // This is the default and can be omitted
-  });
-
 app.use(jiraRoutes)
+
 
 app.post('/api/chat',async (req,res)=>{
     try{

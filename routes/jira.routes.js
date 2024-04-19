@@ -2,7 +2,7 @@ import { Router } from "express";
 import { getIssues } from "../controllers/jiraRest/getIssues.js";
 import { getUsers } from "../controllers/jiraRest/getUsers.js";
 import { createIssue } from "../controllers/jiraRest/createIssue.js";
-
+import { readExcel } from "../controllers/excel/readExcel.js";
 
 const router = Router();
 
@@ -28,8 +28,9 @@ router.route('/api/jira/issue')
 })
 .post(async(req,res)=>{
     try{
+        /*
         let {projectKey, issueType, summary, description} = req.body
-    
+        
         let issueCreated = await createIssue(projectKey, issueType, summary, description)
 
         if(issueCreated.key){
@@ -38,6 +39,21 @@ router.route('/api/jira/issue')
                 data:issueCreated
             })
         }
+        */
+       console.log('Comenzando a crear las cards en jira: ')
+       let data = await readExcel('Hoja 1')
+       let progreso = 0
+       let total = data.length
+       data.forEach(async (element) => {
+        if(element.FASE === undefined) return 
+        console.log(progreso)
+        await createIssue('PROYEC', 'Story', element.NOMBRE, '',[element.GRUPO],'PROYEC-37')
+        progreso += 1
+       })
+
+       if(progreso >= total){
+        res.send('Las cards se crearon con exito!')
+       }
     }catch(err){
         console.log(err)
     }

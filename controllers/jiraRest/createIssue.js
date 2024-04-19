@@ -11,7 +11,7 @@ const auth = {
 };
 
 
-export async function createIssue(projectKey, issueType, summary, description) {
+export async function createIssue(projectKey, issueType, summary, description,labels,parent) {
 
   try {
     const baseUrl = 'https://' + domain + '.atlassian.net';
@@ -20,7 +20,9 @@ export async function createIssue(projectKey, issueType, summary, description) {
         project: { key: projectKey },
         summary: summary,
         description: description,
-        issuetype: { name: issueType }
+        issuetype: { name: issueType },
+        labels: labels,
+        parent: { key: parent}
       }
     };
     const config = {
